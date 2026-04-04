@@ -18,7 +18,10 @@ ALT_PAGE_MARKER_PATTERN = re.compile(
     re.IGNORECASE
 )
 TITLE_PATTERN = re.compile(r"^#\s+(.+)$", re.MULTILINE)
-DATE_PATTERN = re.compile(r"^\*(.+?)\*$", re.MULTILINE)
+DATE_PATTERN = re.compile(
+    r"^\*((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+20\d{2})\b.*\*$",
+    re.MULTILINE
+)
 
 
 def extract_title(text: str, fallback_name: str) -> str:
@@ -59,7 +62,7 @@ def split_into_pages(text: str) -> List[Dict[str, object]]:
         matches = list(ALT_PAGE_MARKER_PATTERN.finditer(text))
 
     pages: List[Dict[str, object]] = []
-    
+
     if not matches:
         # Fallback: whole document as one chunk if no page markers found
         cleaned = text.strip()
@@ -138,6 +141,7 @@ def chunk_file(md_path: Path) -> List[Dict[str, object]]:
     pages = split_into_pages(raw_text)
 
     chunks: List[Dict[str, object]] = []
+    page_counts = {}
 
     for page in pages:
         page_number = int(page["page_number"])
@@ -146,8 +150,11 @@ def chunk_file(md_path: Path) -> List[Dict[str, object]]:
         if not page_text:
             continue
 
+        page_counts[page_number] = page_counts.get(page_number, 0) + 1
+        within_page_idx = page_counts[page_number]
+
         chunk = {
-            "chunk_id": f"{md_path.stem}_p{page_number}",
+            "chunk_id": f"{md_path.stem}_p{page_number}_c{within_page_idx}",
             "source_file": md_path.name,
             "source_path": str(md_path.relative_to(PROJECT_ROOT)).replace("\\", "/"),
             "lecture_title": lecture_title,
