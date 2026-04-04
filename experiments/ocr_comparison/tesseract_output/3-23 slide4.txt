@@ -1,0 +1,7 @@
+WHAT ARE NEURAL NETWORKS? 8 Carleton
+
+UNIVERSITY
+
+Attificial neural networks are machine learning models that are inspired by
+the biological brain.
+
