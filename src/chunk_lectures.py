@@ -13,6 +13,10 @@ CHUNKS_OUTPUT_FILE = CHUNKS_OUTPUT_DIR / "lecture_chunks.json"
 
 
 PAGE_MARKER_PATTERN = re.compile(r"COMP\s+4107\s+W2026\s+Page\s+(\d+)", re.IGNORECASE)
+ALT_PAGE_MARKER_PATTERN = re.compile(
+    r"\*\s*.+?\|\s*(\d+)\s*\*",
+    re.IGNORECASE
+)
 TITLE_PATTERN = re.compile(r"^#\s+(.+)$", re.MULTILINE)
 DATE_PATTERN = re.compile(r"^\*(.+?)\*$", re.MULTILINE)
 
@@ -48,8 +52,14 @@ def split_into_pages(text: str) -> List[Dict[str, object]]:
     ]
     """
     matches = list(PAGE_MARKER_PATTERN.finditer(text))
-    pages: List[Dict[str, object]] = []
 
+
+    # Try alternate page marker format if primary fails
+    if not matches:
+        matches = list(ALT_PAGE_MARKER_PATTERN.finditer(text))
+
+    pages: List[Dict[str, object]] = []
+    
     if not matches:
         # Fallback: whole document as one chunk if no page markers found
         cleaned = text.strip()
