@@ -86,14 +86,14 @@ To run the transcription on the PDF slides:
 2. Install dependencies:
 
 ```sh
-pip install -r experiments/ocr_comparison/gemini_output/requirements.txt
+pip install -r src/requirements.txt
 ```
 3. Set the `GOOGLE_API_KEY` environment variable using your Gemini API key. Obtain your key from https://aistudio.google.com/
 
 4. Run the script:
 
 ```sh
-python experiments/ocr_comparison/gemini_output/transcribe.py
+python src/transcribe.py
 ```
 
 This will iterate over the pdf files in the `data/raw_slides` folder and transcribe each PDF into a markdown `.md` file.
