@@ -63,7 +63,7 @@ If something is unclear, mark it as [unclear].
 Changed due to the ocr output not matching the lecture structure, such as having multiple bullet points within the same line, opposite to what would be written in the slides.
 
 ```
-Now, I want you do the same again, I will provide you many lectures prompt by prompt, and I want you to 
+I will provide you many PDF lectures prompt by prompt, and I want you to 
 Transcribe the handwritten lecture slide into clean structured markdown.
 
 Requirements:
@@ -74,10 +74,13 @@ Requirements:
 ```
 
 #### Later on again
+I needed a marker phrase to use as a boundary to split pages cleanly for RAG chunking. So this was appended to the prompt:
+
 ```
-Moving on to the next 2:
 (Also please don't forget to add the "COMP 4107 W2026 Page x" at the bottom of every page as it is in these documents, and not only do that in the very last page of your markdown)
 ```
+
+For the most part, the LLM was able to insert this marker with a consistent format. (Manual changes/additions/deletions were needed in a few cases)
 
 #### Command
 

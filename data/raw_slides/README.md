@@ -1,0 +1,1 @@
+Please login to Carleton Brightspace and download the slides for COMP4107  and place them in this dir.
