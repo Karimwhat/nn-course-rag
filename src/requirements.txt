@@ -1,1 +1,4 @@
 langchain-google-genai
+langchain 
+langchain-chroma 
+langchain-huggingface

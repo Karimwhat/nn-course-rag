@@ -4,8 +4,9 @@ import json
 import shutil
 from pathlib import Path
 
-import chromadb
-from sentence_transformers import SentenceTransformer
+from langchain_chroma import Chroma
+from langchain_core.documents import Document
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -13,7 +14,7 @@ CHUNKS_FILE = PROJECT_ROOT / "data" / "chunks" / "lecture_chunks.json"
 VECTOR_STORE_DIR = PROJECT_ROOT / "data" / "vector_store"
 COLLECTION_NAME = "lecture_chunks"
 
-EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 
 def load_chunks() -> list[dict]:
@@ -35,20 +36,8 @@ def reset_vector_store() -> None:
     VECTOR_STORE_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def main() -> None:
-    chunks = load_chunks()
-    print(f"Loaded {len(chunks)} chunks")
-
-    reset_vector_store()
-
-    print(f"Loading embedding model: {EMBEDDING_MODEL_NAME}")
-    model = SentenceTransformer(EMBEDDING_MODEL_NAME)
-
-    client = chromadb.PersistentClient(path=str(VECTOR_STORE_DIR))
-    collection = client.create_collection(name=COLLECTION_NAME)
-
-    documents: list[str] = []
-    metadatas: list[dict] = []
+def build_documents(chunks: list[dict]) -> tuple[list[Document], list[str]]:
+    documents: list[Document] = []
     ids: list[str] = []
 
     for chunk in chunks:
@@ -56,6 +45,7 @@ def main() -> None:
         text = chunk["text"]
 
         metadata = {
+            "chunk_id": chunk_id,
             "source_file": chunk["source_file"],
             "source_path": chunk["source_path"],
             "lecture_title": chunk["lecture_title"],
@@ -63,19 +53,35 @@ def main() -> None:
             "page_number": chunk["page_number"],
         }
 
-        documents.append(text)
-        metadatas.append(metadata)
+        documents.append(
+            Document(
+                page_content=text,
+                metadata=metadata,
+            )
+        )
         ids.append(chunk_id)
 
-    print("Computing embeddings...")
-    embeddings = model.encode(documents, show_progress_bar=True).tolist()
+    return documents, ids
 
-    print("Adding chunks to Chroma collection...")
-    collection.add(
-        ids=ids,
+
+def main() -> None:
+    chunks = load_chunks()
+    print(f"Loaded {len(chunks)} chunks")
+
+    reset_vector_store()
+
+    print(f"Loading embedding model: {EMBEDDING_MODEL_NAME}")
+    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
+
+    documents, ids = build_documents(chunks)
+
+    print("Building Chroma vector store...")
+    vector_store = Chroma.from_documents(
         documents=documents,
-        metadatas=metadatas,
-        embeddings=embeddings,
+        embedding=embeddings,
+        ids=ids,
+        collection_name=COLLECTION_NAME,
+        persist_directory=str(VECTOR_STORE_DIR),
     )
 
     print(f"Done. Stored {len(ids)} chunks in vector store:")
