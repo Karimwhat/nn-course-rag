@@ -93,7 +93,7 @@ def main():
                     vector_store=vector_store, 
                     llm=llm, 
                     enable_rag=True, 
-                    top_k=10
+                    top_k=5
                 )
                 break
             except Exception as e:
