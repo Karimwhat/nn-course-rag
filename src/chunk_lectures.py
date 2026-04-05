@@ -133,6 +133,7 @@ def clean_page_text(text: str) -> str:
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
+chunk_number = 0
 
 def chunk_file(md_path: Path) -> List[Dict[str, object]]:
     raw_text = md_path.read_text(encoding="utf-8")
@@ -143,13 +144,16 @@ def chunk_file(md_path: Path) -> List[Dict[str, object]]:
     chunks: List[Dict[str, object]] = []
     page_counts = {}
 
+    global chunk_number
+
     for page in pages:
         page_number = int(page["page_number"])
         page_text = str(page["text"]).strip()
-
         if not page_text:
             continue
 
+        chunk_number += 1
+        
         page_counts[page_number] = page_counts.get(page_number, 0) + 1
         within_page_idx = page_counts[page_number]
 
@@ -161,6 +165,7 @@ def chunk_file(md_path: Path) -> List[Dict[str, object]]:
             "lecture_date": lecture_date,
             "page_number": page_number,
             "text": page_text,
+            "chunk_number": chunk_number
         }
         chunks.append(chunk)
 

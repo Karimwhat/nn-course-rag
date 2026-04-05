@@ -7,6 +7,7 @@ from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.documents import Document
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -28,9 +29,10 @@ def format_context(docs: list) -> str:
         lecture_date = meta.get("lecture_date", "")
         page_number = meta.get("page_number", "")
         chunk_id = meta.get("chunk_id", "")
+        chunk_number = meta.get("chunk_number", "")
 
         context_parts.append(
-            f"[Document {i}]\n"
+            f"[Document {i}; chunk_number: {chunk_number}]\n"
             f"Chunk ID: {chunk_id}\n"
             f"Lecture: {lecture_title}\n"
             f"Date: {lecture_date}\n"
@@ -42,6 +44,8 @@ def format_context(docs: list) -> str:
 
 
 def main() -> None:
+    enable_rag = False
+
     if not VECTOR_STORE_DIR.exists():
         raise FileNotFoundError(
             f"Vector store not found at {VECTOR_STORE_DIR}. Run build_vector_store.py first."
@@ -73,7 +77,20 @@ def main() -> None:
         if not query:
             continue
 
-        chunks = vector_store.similarity_search(query, k=TOP_K)
+        if enable_rag:
+            chunks = vector_store.similarity_search(query, k=TOP_K)
+        else:
+            # 1. Retrieve all items from the collection
+            all_data = vector_store.get()
+            # 2. Convert the raw dictionary output into a list of Document objects
+            chunks = [
+                Document(page_content=text, metadata=meta)
+                for text, meta in zip(all_data["documents"], all_data["metadatas"])
+            ]
+            # 3. Sort the chunks. 
+            # We sort by chunk_number to ensure chronological/sequential order.
+            chunks.sort(key=lambda x: (x.metadata.get("chunk_number", "")))
+
         context = format_context(chunks)
 
         # print("\nTop retrieved chunks:\n")
@@ -95,8 +112,10 @@ def main() -> None:
 
             When possible:
             - answer clearly and directly
-            - cite the supporting lecture/page/chunk IDs in a short "Sources" section
+            - cite the supporting lecture/page/chunk IDs in a short "Sources" section, also include inline citations
             - do not invent facts not present in the context
+
+            When you cite your answers, use the chunk_number.
 
             Retrieved Context:
             {context}

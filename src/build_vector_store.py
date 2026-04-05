@@ -39,10 +39,11 @@ def reset_vector_store() -> None:
 def build_documents(chunks: list[dict]) -> tuple[list[Document], list[str]]:
     documents: list[Document] = []
     ids: list[str] = []
-
+    chunk_number = 0
     for chunk in chunks:
         chunk_id = chunk["chunk_id"]
         text = chunk["text"]
+        chunk_number += 1
 
         metadata = {
             "chunk_id": chunk_id,
@@ -51,6 +52,7 @@ def build_documents(chunks: list[dict]) -> tuple[list[Document], list[str]]:
             "lecture_title": chunk["lecture_title"],
             "lecture_date": chunk["lecture_date"] or "",
             "page_number": chunk["page_number"],
+            "chunk_number": chunk_number
         }
 
         documents.append(
