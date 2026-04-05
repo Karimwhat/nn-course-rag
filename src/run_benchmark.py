@@ -58,10 +58,13 @@ def main():
     parser = argparse.ArgumentParser(description="Run RAG Benchmark")
     parser.add_argument("--name", type=str, required=True, help="Benchmark name (e.g. 'noRAG')")
     parser.add_argument("--input", type=str, default="data/benchmark/benchmark.json", help="Path to benchmark JSON")
+    parser.add_argument("--topK", type=int, default=10, help="TopK number (e.g., '7')")
     args = parser.parse_args()
 
     benchmark_name = args.name
     input_file = args.input
+    topK_number = args.topK
+    
 
     # 2. Initialize LLM and vector store
     # Note: We use the returned 'llm' as our Judge as well
@@ -93,7 +96,7 @@ def main():
                     vector_store=vector_store, 
                     llm=llm, 
                     enable_rag=True, 
-                    top_k=5
+                    top_k=topK_number
                 )
                 break
             except Exception as e:

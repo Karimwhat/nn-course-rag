@@ -22,10 +22,26 @@
         [ ] Look up QnA benchmarks gemini performance
         [ ] Judge LLM benchmark (look up)
 [ ] Benchmarks:
-    [ ] noRAG - pass entire lecture set
-    [ ] RAG topk5
-    [ ] RAG topk10
-    [ ] RAG topk20
+    [ ] Run the below for 5 iterations each for robustness
+    [ ] noRAG - pass entire lecture set - 5 times
+    [ ] RAG topk5 - 5 times
+        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
+                      Final Score: 74.57627118644068%
+            Result 2:
+
+            Result 3:
+    [ ] RAG topk10 - 5 times 
+        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
+                      Final Score: 74.57627118644068%
+            Result 2:
+
+            Result 3:
+    [ ] RAG topk20 - 5 times
+        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
+                      Final Score: 74.57627118644068%
+            Result 2:
+
+            Result 3:
     [ ] Literally nothing (No RAG, and No context)
 [ ] Presentation:
     [ ] Know the order of discussion points for presentation
