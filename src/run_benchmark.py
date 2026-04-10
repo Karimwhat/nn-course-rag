@@ -3,6 +3,7 @@ import argparse
 import sys
 import time
 from typing import List, Dict
+import random
 
 from query_vector_store import query_vector_store, initialize_vector_store_llm
 
@@ -103,12 +104,16 @@ def main():
                 )
                 break
             except Exception as e:
-                # Check for "429" in the error message 
-                if "429" in str(e):
-                    print("Rate limit detected in error message. Retrying in 5 seconds...")
-                    time.sleep(5)
+                error_msg = str(e)
+                # Catch both Rate Limits (429) and Server Overload (503)
+                if "429" in error_msg or "503" in error_msg or "UNAVAILABLE" in error_msg:
+                    # Random wait between 5 and 10 seconds to desync the terminals
+                    wait_time = 5 + random.uniform(1, 5)
+                    print(f"Server busy/limit (Error: {error_msg[:50]}...). Retrying in {wait_time:.2f}s...")
+                    time.sleep(wait_time)
                     continue
                 else:
+                    # If it's a different error, we still want to see it
                     raise e
                 
 
