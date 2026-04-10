@@ -59,11 +59,13 @@ def main():
     parser.add_argument("--name", type=str, required=True, help="Benchmark name (e.g. 'noRAG')")
     parser.add_argument("--input", type=str, default="data/benchmark/benchmark.json", help="Path to benchmark JSON")
     parser.add_argument("--topK", type=int, default=10, help="TopK number (e.g., '7')")
+    parser.add_argument("--context", action="store_true", help="Pass entire lecture context")
     args = parser.parse_args()
 
     benchmark_name = args.name
     input_file = args.input
     topK_number = args.topK
+    context = args.context
     
 
     # 2. Initialize LLM and vector store
@@ -95,7 +97,8 @@ def main():
                     query=q_text, 
                     vector_store=vector_store, 
                     llm=llm, 
-                    enable_rag=True, 
+                    enable_rag=False, 
+                    enable_context=context,
                     top_k=topK_number
                 )
                 break
