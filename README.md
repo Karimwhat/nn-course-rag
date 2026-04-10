@@ -4,7 +4,6 @@ RAG system with neural reranker for answering questions about course material.
 Main components:
 - OCR preprocessing for handwritten slides
 - RAG pipeline for question answering
-- Neural reranker
 - Benchmark evaluation
 
 ## First Experiments

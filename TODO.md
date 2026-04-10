@@ -24,30 +24,33 @@
 [ ] Benchmarks:
     [ ] Run the below for 5 iterations each for robustness
     [ ] noRAG - pass entire lecture set - 5 times
-    [ ] RAG topk5 - 5 times
-        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
+    [x] RAG topk5 - 3 times
+        [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_5.json
+                      Final Score: 64.40677966101694%
+            Result 2: Benchmark complete. Results saved to results/benchmark_result_topK_5part2.json
+                      Final Score: 65.2542372881356%
+            Result 3: Benchmark complete. Results saved to results/benchmark_result_topK_5part3.json
+                      Final Score: 64.40677966101694%
+    [x] RAG topk10 - 3 times 
+        [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
                       Final Score: 74.57627118644068%
-            Result 2:
-
-            Result 3:
-    [ ] RAG topk10 - 5 times 
-        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
+            Result 2: Benchmark complete. Results saved to results/benchmark_result_topK_10part2.json
+                      Final Score: 73.72881355932203%
+            Result 3: Benchmark complete. Results saved to results/benchmark_result_topK_10part3.json
+                      Final Score: 72.88135593220339%
+    [x] RAG topk20 - 3 times
+        [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_20.json
+                      Final Score: 72.03389830508475%
+            Result 2: Benchmark complete. Results saved to results/benchmark_result_topK_20part2.json
+                      Final Score: 72.03389830508475%
+            Result 3: Benchmark complete. Results saved to results/benchmark_result_topK_20part3.json
                       Final Score: 74.57627118644068%
-            Result 2:
-
-            Result 3:
-    [ ] RAG topk20 - 5 times
-        [ ] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_10.json
-                      Final Score: 74.57627118644068%
-            Result 2:
-
-            Result 3:
-    [ ] Literally nothing (No RAG, and No context)
-[ ] Presentation:
-    [ ] Know the order of discussion points for presentation
-        [ ] Main goal: Evaluate LLM Based student QnA based on lecture material
-        [ ] Read Handwritten slides -> OCR into text -> OCR progress and methodology explained -> Benchmark -> RAG process and methodology explained -> Judge LLM -> ... rest of progress -> conclusion/results
-    [ ] Understand why and what each relevant file does, and the main functions/calls within
+    [x] Literally nothing (No RAG, and No context)
+[x] Presentation:
+    [x] Know the order of discussion points for presentation
+        [x] Main goal: Evaluate LLM Based student QnA based on lecture material
+        [x] Read Handwritten slides -> OCR into text -> OCR progress and methodology explained -> Benchmark -> RAG process and methodology explained -> Judge LLM -> ... rest of progress -> conclusion/results
+    [x] Understand why and what each relevant file does, and the main functions/calls within
 [ ] Improve RAG baseline by adjusting RAG hyper parameters
     [ ] All lectures in the context
     [ ] Hyperparameters:
