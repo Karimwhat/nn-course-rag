@@ -23,7 +23,14 @@
         [ ] Judge LLM benchmark (look up)
 [ ] Benchmarks:
     [ ] Run the below for 5 iterations each for robustness
-    [ ] noRAG - pass entire lecture set - 5 times
+    [x] noRAG - pass entire lecture set - 3 times
+        [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_noRAG.json
+                      Final Score: 75.42372881355932%
+            Result 2: Benchmark complete. Results saved to results/benchmark_result_noRAGpart2.json
+                      Final Score: 72.88135593220339%
+            Result 3: Benchmark complete. Results saved to results/benchmark_result_noRAGpart3.json
+                      Final Score: 74.57627118644068%
+
     [x] RAG topk5 - 3 times
         [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_topK_5.json
                       Final Score: 64.40677966101694%
@@ -46,6 +53,12 @@
             Result 3: Benchmark complete. Results saved to results/benchmark_result_topK_20part3.json
                       Final Score: 74.57627118644068%
     [x] Literally nothing (No RAG, and No context)
+        [x] Result 1: Benchmark complete. Results saved to results/benchmark_result_NOTHING.json
+                      Final Score: 83.89830508474576%
+            Result 2: Benchmark complete. Results saved to results/benchmark_result_NOTHINGpart2.json
+                      Final Score: 83.05084745762711%
+            Result 3: Benchmark complete. Results saved to results/benchmark_result_NOTHINGpart3.json
+                      Final Score: 82.20338983050848%
 [x] Presentation:
     [x] Know the order of discussion points for presentation
         [x] Main goal: Evaluate LLM Based student QnA based on lecture material
